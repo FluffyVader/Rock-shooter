@@ -1,12 +1,16 @@
+import os
 import pygame
 #set the screen surfuce
+
+from utils import load_sprite
 
 class SpaceRocks:
     def __init__(self):
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 600
         self._init_pygame()
-        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT)) #screen is made
+        self.background = load_sprite("space", False)
 
     def main_loop(self):
         while True:
@@ -30,11 +34,15 @@ class SpaceRocks:
         pass
 
     def _draw(self):
-        self.screen.fill((0, 0, 255))
+        self.screen.blit(self.background, (0,0))
+        #self.screen.fill((0, 0, 255))
         pygame.display.flip()
 
 
 ##################################################################################################
+
+#set working directory 
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 space_rocks = SpaceRocks()
 space_rocks.main_loop()
