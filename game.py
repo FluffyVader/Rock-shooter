@@ -1,5 +1,6 @@
 import os
 import pygame
+from models import GameObject
 #set the screen surfuce
 
 from utils import load_sprite
@@ -11,6 +12,13 @@ class SpaceRocks:
         self._init_pygame()
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT)) #screen is made
         self.background = load_sprite("space", False)
+        self.spaceship = GameObject(
+            (400, 300), load_sprite("spaceship"), (0, 0)
+        )
+        self.asteroid = GameObject(
+            (400, 300), load_sprite("asteroid"), (1, 0)
+        )
+
 
     def main_loop(self):
         while True:
@@ -31,12 +39,17 @@ class SpaceRocks:
 
 
     def _process_game_logic(self):
-        pass
+        self.spaceship.move()
+        self.asteroid.move()
+
 
     def _draw(self):
         self.screen.blit(self.background, (0,0))
         #self.screen.fill((0, 0, 255))
+        self.spaceship.draw(self.screen)
+        self.asteroid.draw(self.screen)        
         pygame.display.flip()
+
 
 
 ##################################################################################################
