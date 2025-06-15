@@ -4,6 +4,7 @@ from models import GameObject
 #set the screen surfuce
 
 from utils import load_sprite
+from models import Spaceship
 
 class SpaceRocks:
     def __init__(self):
@@ -13,12 +14,10 @@ class SpaceRocks:
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT)) #screen is made
         self.background = load_sprite("space", False)
         self.clock = pygame.time.Clock()
-        self.spaceship = GameObject(
-            (400, 300), load_sprite("spaceship"), (0, 0)
-        )
-        self.asteroid = GameObject(
-            (400, 300), load_sprite("asteroid"), (1, 0)
-        )
+        self.spaceship = Spaceship((400, 300))
+        # self.asteroid = GameObject(
+        #     (400, 300), load_sprite("asteroid"), (1, 0)
+        # )
 
 
     def main_loop(self):
@@ -38,17 +37,22 @@ class SpaceRocks:
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 quit()
 
+        is_key_pressed_dict = pygame.key.get_pressed()
+        if is_key_pressed_dict[pygame.K_RIGHT]:
+            self.spaceship.rotate(clockwise = True)
+        elif is_key_pressed_dict[pygame.K_LEFT]:
+            self.spaceship.rotate(clockwise = False)
 
     def _process_game_logic(self):
         self.spaceship.move()
-        self.asteroid.move()
+        #self.asteroid.move()
 
 
     def _draw(self):
         self.screen.blit(self.background, (0,0))
         #self.screen.fill((0, 0, 255))
         self.spaceship.draw(self.screen)
-        self.asteroid.draw(self.screen)
+        #self.asteroid.draw(self.screen)
         pygame.display.flip()
         self.clock.tick(60)
 
