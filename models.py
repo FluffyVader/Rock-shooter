@@ -53,4 +53,7 @@ class Spaceship(GameObject):
         surface.blit(rotated_surface, blit_position)
 
                 
+class Asteroid(GameObject):
+    def __init__(self, position):
+        super().__init__(position, load_sprite("asteroid"), (0, 0))
 

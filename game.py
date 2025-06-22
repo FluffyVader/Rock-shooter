@@ -4,7 +4,7 @@ from models import GameObject
 #set the screen surfuce
 
 from utils import load_sprite
-from models import Spaceship
+from models import Spaceship, Asteroid
 
 class SpaceRocks:
     def __init__(self):
@@ -15,17 +15,16 @@ class SpaceRocks:
         self.background = load_sprite("space", False)
         self.clock = pygame.time.Clock()
         self.spaceship = Spaceship((400, 300))
-        # self.asteroid = GameObject(
-        #     (400, 300), load_sprite("asteroid"), (1, 0)
-        # )
-
-
+        self.asteroids = [Asteroid((0,0)) for _ in range (6)]
     def main_loop(self):
         while True:
             self._handle_input()
             self._process_game_logic()
             self._draw()
 
+    def _get_game_objects(self):
+        return [*self.asteroids, self.spaceship]
+    
     def _init_pygame(self):
         pygame.init()
         pygame.display.set_caption("Rock shooter")
@@ -46,17 +45,20 @@ class SpaceRocks:
             self.spaceship.accelerate()
 
     def _process_game_logic(self):
-        self.spaceship.move(self.screen)
-        #self.asteroid.move()
-
+        for game_object in self._get_game_objects():
+            game_object.move(self.screen)
 
     def _draw(self):
         self.screen.blit(self.background, (0,0))
+        for game_object in self._get_game_objects():
+            game_object.draw(self.screen)
         #self.screen.fill((0, 0, 255))
         self.spaceship.draw(self.screen)
         #self.asteroid.draw(self.screen)
         pygame.display.flip()
         self.clock.tick(60)
+
+
 
 ##################################################################################################
 
