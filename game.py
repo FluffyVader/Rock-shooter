@@ -8,6 +8,7 @@ from models import Spaceship, Asteroid
 from utils import get_random_position, load_sprite
 
 class SpaceRocks:
+    MIN_ASTEROID_DISTANCE = 250
     def __init__(self):
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 600
@@ -15,10 +16,24 @@ class SpaceRocks:
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT)) #screen is made
         self.background = load_sprite("space", False)
         self.clock = pygame.time.Clock()
+
         self.spaceship = Spaceship((400, 300))
-        self.asteroids = [
-        Asteroid(get_random_position(self.screen)) for _ in range(6)]
+
+        self.asteroids = []
         
+        self.spaceship = Spaceship((400, 300))
+
+        for _ in range(6):
+            while True:
+                position = get_random_position(self.screen)
+                if (
+                    position.distance_to(self.spaceship.position)
+                    > self.MIN_ASTEROID_DISTANCE
+                ):
+                    break
+
+            self.asteroids.append(Asteroid(position))
+
     def main_loop(self):
         while True:
             self._handle_input()
