@@ -20,8 +20,6 @@ class SpaceRocks:
         self.spaceship = Spaceship((400, 300))
 
         self.asteroids = []
-        
-        self.spaceship = Spaceship((400, 300))
 
         for _ in range(6):
             while True:
