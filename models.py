@@ -1,5 +1,5 @@
 from pygame.math import Vector2
-from utils import load_sprite, wrap_position
+from utils import load_sprite, wrap_position, get_random_velocity
 from pygame.transform import rotozoom
 
 
@@ -25,6 +25,12 @@ class GameObject:
         distance = self.position.distance_to(other_obj.position)
         return distance < self.radius + other_obj.radius
     
+###############################################################################
+
+class Asteroid(GameObject):
+    def __init__(self, position):
+        super().__init__(position, load_sprite("asteroid"), get_random_velocity(1,2))
+
 ###############################################################################
 
 class Spaceship(GameObject):
@@ -53,7 +59,3 @@ class Spaceship(GameObject):
         surface.blit(rotated_surface, blit_position)
 
                 
-class Asteroid(GameObject):
-    def __init__(self, position):
-        super().__init__(position, load_sprite("asteroid"), (0, 0))
-
