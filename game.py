@@ -39,8 +39,13 @@ class SpaceRocks:
             self._draw()
 
     def _get_game_objects(self):
-        return [*self.asteroids, self.spaceship]
-    
+        game_objects = [*self.asteroids]
+
+        if self.spaceship:
+            game_objects.append(self.spaceship)
+
+        return game_objects
+
     def _init_pygame(self):
         pygame.init()
         pygame.display.set_caption("Rock shooter")
@@ -63,6 +68,12 @@ class SpaceRocks:
     def _process_game_logic(self):
         for game_object in self._get_game_objects():
             game_object.move(self.screen)
+
+        if self.spaceship:
+            for asteroid in self.asteroids:
+                if self.spaceship.collides_with(asteroid):
+                    self.spaceship = None
+                    break
 
     def _draw(self):
         self.screen.blit(self.background, (0,0))
