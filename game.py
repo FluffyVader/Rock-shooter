@@ -4,7 +4,7 @@ from models import GameObject
 #set the screen surfuce
 
 from utils import load_sprite
-from models import Spaceship, Asteroid
+from models import Spaceship, Asteroid, Bullet
 from utils import get_random_position, load_sprite
 
 class SpaceRocks:
@@ -18,9 +18,11 @@ class SpaceRocks:
         self.background = load_sprite("space", False)
         self.clock = pygame.time.Clock()
 
-        self.spaceship = Spaceship((self.SCREEN_WIDTH / 2, self.SCREEN_HEIGHT / 2))
+        self.bullets = []
+        self.spaceship = Spaceship((self.SCREEN_WIDTH/2,self.SCREEN_HEIGHT/2 ), self.bullets.append)
 
         self.asteroids = []
+   
 
         for _ in range(self.MAX_ASTEROID_COUNT):
             while True:
@@ -39,7 +41,7 @@ class SpaceRocks:
             self._draw()
 
     def _get_game_objects(self):
-        game_objects = [*self.asteroids]
+        game_objects = [*self.asteroids, *self.bullets]
 
         if self.spaceship:
             game_objects.append(self.spaceship)
@@ -56,6 +58,14 @@ class SpaceRocks:
                 quit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 quit()
+                
+            elif (
+                self.spaceship
+                and event.type == pygame.KEYDOWN
+                and event.key == pygame.K_SPACE
+            ):
+                self.spaceship.shoot()
+
 
         is_key_pressed_dict = pygame.key.get_pressed()
         if is_key_pressed_dict[pygame.K_RIGHT]:
@@ -74,6 +84,17 @@ class SpaceRocks:
                 if self.spaceship.collides_with(asteroid):
                     self.spaceship = None
                     break
+
+        for bullet in self.bullets[:]:
+            for asteroid in self.asteroids[:]:
+                if asteroid.collides_with(bullet):
+                    self.asteroids.remove(asteroid)
+                    self.bullets.remove(bullet)
+                    break
+
+        for bullet in self.bullets[:]:
+            if not self.screen.get_rect().collidepoint(bullet.position):
+                self.bullets.remove(bullet)
 
     def _draw(self):
         self.screen.blit(self.background, (0,0))
