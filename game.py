@@ -32,7 +32,7 @@ class SpaceRocks:
                 if (isAsteroidFarEnoughFromSpaceship):
                     break
 
-            self.asteroids.append(Asteroid(position))
+            self.asteroids.append(Asteroid(position, self.asteroids.append))
 
     def main_loop(self):
         while True:
@@ -90,6 +90,7 @@ class SpaceRocks:
                 if asteroid.collides_with(bullet):
                     self.asteroids.remove(asteroid)
                     self.bullets.remove(bullet)
+                    asteroid.split( )
                     break
 
         for bullet in self.bullets[:]:
@@ -103,7 +104,7 @@ class SpaceRocks:
         #self.screen.fill((0, 0, 255))
         self.spaceship.draw(self.screen)
         #self.asteroid.draw(self.screen)
-        pygame.display.flip()
+        pygame.display.flip() 
         self.clock.tick(60)
 
 
