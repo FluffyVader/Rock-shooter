@@ -3,13 +3,13 @@ import pygame
 from models import GameObject
 #set the screen surfuce
 
-from utils import load_sprite
 from models import Spaceship, Asteroid, Bullet
 from utils import get_random_position, load_sprite
 
 class SpaceRocks:
     MIN_ASTEROID_DISTANCE = 250
     MAX_ASTEROID_COUNT = 6
+    MAX_ASTEROID_SPLITS = 3
     def __init__(self):
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 600
@@ -31,8 +31,8 @@ class SpaceRocks:
                 
                 if (isAsteroidFarEnoughFromSpaceship):
                     break
-
-            self.asteroids.append(Asteroid(position, self.asteroids.append))
+ 
+            self.asteroids.append(Asteroid(position, self.asteroids.append, self.MAX_ASTEROID_SPLITS))
 
     def main_loop(self):
         while True:

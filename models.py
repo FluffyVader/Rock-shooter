@@ -1,7 +1,6 @@
 from pygame.math import Vector2
-from utils import load_sprite, wrap_position, get_random_velocity
+from utils import load_sprite, wrap_position, get_random_velocity, load_sound
 from pygame.transform import rotozoom
-
 
 UP = Vector2(0, -1)
 
@@ -31,14 +30,14 @@ class Asteroid(GameObject):
     def __init__(self, position, create_asteroid_callback, size = 3):
         self.create_asteroid_callback = create_asteroid_callback
         self.size = size
-        size_to_scale = {
-            3: 1,
-            2: 0.5,
-            1: 0.25                                         ,}
+        size_to_scale = {   3: 1,
+                            2: 0.5,
+                            1: 0.25     
+                        }
         scale = size_to_scale[size]
         sprite = rotozoom(load_sprite("asteroid"), 0, scale)
 
-        super().__init__(position, sprite, get_random_velocity(1, 2))
+        super().__init__(position, sprite, get_random_velocity(1, 1))
 
     def split(self):
         if self.size > 1:
@@ -56,6 +55,7 @@ class Spaceship(GameObject):
     BULLET_SPEED = 3
     def __init__(self, position,create_bullet_callback):
         self.create_bullet_callback = create_bullet_callback
+        self.laser_sound = load_sound("laser")
         
         # Make a copy of the original UP vector
         self.direction = Vector2(UP)
@@ -83,6 +83,7 @@ class Spaceship(GameObject):
         bullet_velocity = self.direction * self.BULLET_SPEED + self.velocity
         bullet = Bullet(self.position, bullet_velocity)
         self.create_bullet_callback(bullet)
+        self.laser_sound.play()
 
 ###############################################################################
                 
